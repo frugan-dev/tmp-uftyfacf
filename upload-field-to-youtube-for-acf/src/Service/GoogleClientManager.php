@@ -55,8 +55,8 @@ class GoogleClientManager
         }
 
         $data = $this->apply_filters(__FUNCTION__.'_data', [
-            'client_id' => WPSPAGHETTI_UFTYFACF_GOOGLE_OAUTH_CLIENT_ID,
-            'client_secret' => WPSPAGHETTI_UFTYFACF_GOOGLE_OAUTH_CLIENT_SECRET,
+            'client_id' => Environment::getRequired('WPSPAGHETTI_UFTYFACF_GOOGLE_OAUTH_CLIENT_ID'),
+            'client_secret' => Environment::getRequired('WPSPAGHETTI_UFTYFACF_GOOGLE_OAUTH_CLIENT_SECRET'),
             'redirect_uri' => admin_url(),
             'access_type' => 'offline',
             'prompt' => 'select_account consent',
@@ -188,14 +188,18 @@ class GoogleClientManager
      */
     public function handle_oauth(): array
     {
-        // @phpstan-ignore-next-line
-        if (!\defined('WPSPAGHETTI_UFTYFACF_GOOGLE_OAUTH_CLIENT_ID') || !\defined('WPSPAGHETTI_UFTYFACF_GOOGLE_OAUTH_CLIENT_SECRET') || empty(WPSPAGHETTI_UFTYFACF_GOOGLE_OAUTH_CLIENT_ID) || empty(WPSPAGHETTI_UFTYFACF_GOOGLE_OAUTH_CLIENT_SECRET)) {
+        try {
+            Environment::validateRequired([
+                'WPSPAGHETTI_UFTYFACF_GOOGLE_OAUTH_CLIENT_ID',
+                'WPSPAGHETTI_UFTYFACF_GOOGLE_OAUTH_CLIENT_SECRET',
+            ]);
+        } catch (\Exception $exception) {
             $data = [
                 'status' => 'error',
-                'message' => __('Missing or wrong OAuth credentials.', 'upload-field-to-youtube-for-acf'),
+                'message' => $exception->getMessage(),
             ];
 
-            $this->logger->error($data);
+            $this->logger->error($exception);
 
             return $data;
         }

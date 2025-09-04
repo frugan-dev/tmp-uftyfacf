@@ -18,6 +18,7 @@ use WpSpaghetti\UFTYFACF\Service\CacheHandler;
 use WpSpaghetti\UFTYFACF\Service\GoogleClientManager;
 use WpSpaghetti\UFTYFACF\Service\YoutubeApiService;
 use WpSpaghetti\UFTYFACF\Trait\HookTrait;
+use WpSpaghetti\WpEnv\Environment;
 use WpSpaghetti\WpLogger\Logger;
 
 if (!\defined('ABSPATH')) {

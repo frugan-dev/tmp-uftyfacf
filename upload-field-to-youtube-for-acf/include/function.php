@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 use DI\ContainerBuilder;
 use Psr\Container\ContainerInterface;
+use WpSpaghetti\WpEnv\Environment;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -45,9 +46,7 @@ if (!function_exists('wpspaghetti_uftyfacf_init_container')) {
         $proxies_dir = $cache_dir.'/proxies';
 
         // Check if we should use ContainerBuilder (with cache)
-        $builder_cache = defined('WPSPAGHETTI_UFTYFACF_BUILDER_CACHE')
-            ? filter_var(WPSPAGHETTI_UFTYFACF_BUILDER_CACHE, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)
-            : true;
+        $builder_cache = Environment::getBool('WPSPAGHETTI_UFTYFACF_BUILDER_CACHE', true);
 
         if ($builder_cache) {
             // Ensure cache directory exists

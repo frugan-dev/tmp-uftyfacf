@@ -42,17 +42,18 @@ return [
         'version' => WPSPAGHETTI_UFTYFACF_VERSION,
         'url' => WPSPAGHETTI_UFTYFACF_URL,
         'path' => WPSPAGHETTI_UFTYFACF_PATH,
-        'debug' => WP_DEBUG,
+        'debug' => Environment::getBool('WP_DEBUG', false),
         'locale' => get_locale(),
-        'server_upload' => defined('WPSPAGHETTI_UFTYFACF_SERVER_UPLOAD') ? filter_var(WPSPAGHETTI_UFTYFACF_SERVER_UPLOAD, FILTER_VALIDATE_BOOLEAN) : false,
-        'cache_busting' => defined('WPSPAGHETTI_UFTYFACF_CACHE_BUSTING') ? filter_var(WPSPAGHETTI_UFTYFACF_CACHE_BUSTING, FILTER_VALIDATE_BOOLEAN) : false,
-        'cron_schedule' => defined('WPSPAGHETTI_UFTYFACF_CRON_SCHEDULE') ? WPSPAGHETTI_UFTYFACF_CRON_SCHEDULE : 'daily',
-        'recent_upload_time_window' => defined('WPSPAGHETTI_UFTYFACF_RECENT_UPLOAD_TIME_WINDOW') ? (int) WPSPAGHETTI_UFTYFACF_RECENT_UPLOAD_TIME_WINDOW : 300, // 5 minutes
-        'resumable_upload_max_chunks' => defined('WPSPAGHETTI_UFTYFACF_RESUMABLE_UPLOAD_MAX_CHUNKS') ? (int) WPSPAGHETTI_UFTYFACF_RESUMABLE_UPLOAD_MAX_CHUNKS : 10000, // Increased limit for very large files
-        'video_id_retrieval_max_attempts' => defined('WPSPAGHETTI_UFTYFACF_VIDEO_ID_RETRIEVAL_MAX_ATTEMPTS') ? (int) WPSPAGHETTI_UFTYFACF_VIDEO_ID_RETRIEVAL_MAX_ATTEMPTS : 5, // Maximum retry attempts
-        'video_id_retrieval_sleep_interval' => defined('WPSPAGHETTI_UFTYFACF_VIDEO_ID_RETRIEVAL_SLEEP_INTERVAL') ? (int) WPSPAGHETTI_UFTYFACF_VIDEO_ID_RETRIEVAL_SLEEP_INTERVAL : 3, // Sleep between attempts in seconds
-        'video_id_retrieval_initial_sleep' => defined('WPSPAGHETTI_UFTYFACF_VIDEO_ID_RETRIEVAL_INITIAL_SLEEP') ? (int) WPSPAGHETTI_UFTYFACF_VIDEO_ID_RETRIEVAL_INITIAL_SLEEP : 2, // Initial sleep before first attempt in seconds
-        'log_retention_days' => defined('WPSPAGHETTI_UFTYFACF_LOG_RETENTION_DAYS') ? (int) WPSPAGHETTI_UFTYFACF_LOG_RETENTION_DAYS : 30, // Days to keep log files
+        'server_upload' => Environment::getBool('WPSPAGHETTI_UFTYFACF_SERVER_UPLOAD', false),
+        'cache_busting' => Environment::getBool('WPSPAGHETTI_UFTYFACF_CACHE_BUSTING', false),
+        'cron_schedule' => Environment::get('WPSPAGHETTI_UFTYFACF_CRON_SCHEDULE', 'daily'),
+        'recent_upload_time_window' => Environment::getInt('WPSPAGHETTI_UFTYFACF_RECENT_UPLOAD_TIME_WINDOW', 300), // 5 minutes
+        'resumable_upload_max_chunks' => Environment::getInt('WPSPAGHETTI_UFTYFACF_RESUMABLE_UPLOAD_MAX_CHUNKS', 10000), // Increased limit for very large files
+        'video_id_retrieval_max_attempts' => Environment::getInt('WPSPAGHETTI_UFTYFACF_VIDEO_ID_RETRIEVAL_MAX_ATTEMPTS', 5), // Maximum retry attempts
+        'video_id_retrieval_sleep_interval' => Environment::getInt('WPSPAGHETTI_UFTYFACF_VIDEO_ID_RETRIEVAL_SLEEP_INTERVAL', 3), // Sleep between attempts in seconds
+        'video_id_retrieval_initial_sleep' => Environment::getInt('WPSPAGHETTI_UFTYFACF_VIDEO_ID_RETRIEVAL_INITIAL_SLEEP', 2), // Initial sleep before first attempt in seconds
+        'log_retention_days' => Environment::getInt('WPSPAGHETTI_UFTYFACF_LOG_RETENTION_DAYS', 30), // Days to keep log files
+        'disable_logging' => Environment::getBool('WPSPAGHETTI_UFTYFACF_DISABLE_LOGGING', false),
     ])),
 
     'allowed_video_mime_types' => \DI\factory(static fn (ContainerInterface $container) => apply_filters($container->get('plugin_prefix').'_allowed_video_mime_types', [

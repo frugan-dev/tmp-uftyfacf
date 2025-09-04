@@ -51,7 +51,7 @@ const ENV = {
   
   // Certificate configuration
   certs: {
-    basePath: process.env.VITE_CERTS_PATH || '../../../../docker/apache/certs-develop',
+    basePath: process.env.VITE_CERTS_PATH || '../tmp/certs',
     keyFile: process.env.VITE_CERT_KEY || 'server.key',
     certFile: process.env.VITE_CERT_CRT || 'server.crt',
   },

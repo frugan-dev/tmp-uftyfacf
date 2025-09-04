@@ -488,8 +488,8 @@ class YoutubeApiService
                 }
             } catch (\Exception $exception) {
                 $this->logger->error('Error during video ID retrieval attempt', [
+                    'exception' => $exception,
                     'attempt' => $attempt,
-                    'exception' => $exception->getMessage(),
                     'upload_id' => $upload_id,
                 ]);
             }
