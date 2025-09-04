@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the WordPress plugin "Upload Field to YouTube for ACF".
  *
- * (É") Frugan <dev@frugan.it>
+ * (ɔ) Frugan <dev@frugan.it>
  *
  * This source file is subject to the GNU GPLv3 or later license that is bundled
  * with this source code in the file LICENSE.
@@ -28,6 +28,38 @@ trait HookTrait
      * Cached hook prefix for this class instance.
      */
     private string $hook_prefix;
+
+    /**
+     * Add a WordPress action with the class-specific prefix.
+     *
+     * Note: This method is public (not protected) and uses the exact same signature
+     * to match the visibility and compatibility requirements of ACF's acf_field parent class.
+     *
+     * @param string   $tag             the action name (will be prefixed)
+     * @param callable $function_to_add the callback function
+     * @param int      $priority        the priority (default: 10)
+     * @param int      $accepted_args   the number of arguments (default: 1)
+     */
+    public function add_action($tag = '', $function_to_add = '', $priority = 10, $accepted_args = 1): void
+    {
+        add_action($this->get_hook_prefix().$tag, $function_to_add, $priority, $accepted_args);
+    }
+
+    /**
+     * Add a WordPress filter with the class-specific prefix.
+     *
+     * Note: This method is public (not protected) and uses the exact same signature
+     * to match the visibility and compatibility requirements of ACF's acf_field parent class.
+     *
+     * @param string   $tag             the filter name (will be prefixed)
+     * @param callable $function_to_add the callback function
+     * @param int      $priority        the priority (default: 10)
+     * @param int      $accepted_args   the number of arguments (default: 1)
+     */
+    public function add_filter($tag = '', $function_to_add = '', $priority = 10, $accepted_args = 1): void
+    {
+        add_filter($this->get_hook_prefix().$tag, $function_to_add, $priority, $accepted_args);
+    }
 
     /**
      * Initialize the hook functionality.
@@ -53,7 +85,7 @@ trait HookTrait
     /**
      * Execute a WordPress action with the class-specific prefix.
      *
-     * @param string $action the action name (will be prefixed)
+     * @param string $action  the action name (will be prefixed)
      * @param mixed  ...$args action arguments
      */
     protected function do_action(string $action, ...$args): void
@@ -64,8 +96,8 @@ trait HookTrait
     /**
      * Apply a WordPress filter with the class-specific prefix.
      *
-     * @param string $filter the filter name (will be prefixed)
-     * @param mixed  $value  the value to filter
+     * @param string $filter  the filter name (will be prefixed)
+     * @param mixed  $value   the value to filter
      * @param mixed  ...$args additional filter arguments
      *
      * @return mixed the filtered value
@@ -73,38 +105,6 @@ trait HookTrait
     protected function apply_filters(string $filter, $value, ...$args)
     {
         return apply_filters($this->get_hook_prefix().$filter, $value, ...$args);
-    }
-
-    /**
-     * Add a WordPress action with the class-specific prefix.
-     * 
-     * Note: This method is public (not protected) and uses the exact same signature 
-     * to match the visibility and compatibility requirements of ACF's acf_field parent class.
-     *
-     * @param string   $tag             the action name (will be prefixed)
-     * @param callable $function_to_add the callback function
-     * @param int      $priority        the priority (default: 10)
-     * @param int      $accepted_args   the number of arguments (default: 1)
-     */
-    public function add_action($tag = '', $function_to_add = '', $priority = 10, $accepted_args = 1)
-    {
-        add_action($this->get_hook_prefix().$tag, $function_to_add, $priority, $accepted_args);
-    }
-
-    /**
-     * Add a WordPress filter with the class-specific prefix.
-     * 
-     * Note: This method is public (not protected) and uses the exact same signature 
-     * to match the visibility and compatibility requirements of ACF's acf_field parent class.
-     *
-     * @param string   $tag             the filter name (will be prefixed)
-     * @param callable $function_to_add the callback function
-     * @param int      $priority        the priority (default: 10)
-     * @param int      $accepted_args   the number of arguments (default: 1)
-     */
-    public function add_filter($tag = '', $function_to_add = '', $priority = 10, $accepted_args = 1)
-    {
-        add_filter($this->get_hook_prefix().$tag, $function_to_add, $priority, $accepted_args);
     }
 
     /**

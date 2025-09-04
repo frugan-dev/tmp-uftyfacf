@@ -30,9 +30,9 @@ if (!\defined('ABSPATH')) {
 class GoogleClientManager
 {
     use HookTrait;
-    
+
     private ?Client $client = null;
-    private null|array|bool $access_token = null;
+    private array|bool|null $access_token = null;
 
     public function __construct(
         private Container $container,
@@ -96,12 +96,12 @@ class GoogleClientManager
         return $this->client;
     }
 
-    public function set_access_token(null|array|bool $token): void
+    public function set_access_token(array|bool|null $token): void
     {
         $this->access_token = $token;
     }
 
-    public function get_access_token(): null|array|bool
+    public function get_access_token(): array|bool|null
     {
         return $this->access_token;
     }

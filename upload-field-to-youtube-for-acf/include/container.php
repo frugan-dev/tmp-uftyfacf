@@ -15,12 +15,12 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+use Psr\Container\ContainerInterface;
 use WpSpaghetti\UFTYFACF\Service\CacheHandler;
 use WpSpaghetti\UFTYFACF\Service\GoogleClientManager;
 use WpSpaghetti\UFTYFACF\Service\YoutubeApiService;
 use WpSpaghetti\WpEnv\Environment;
 use WpSpaghetti\WpLogger\Logger;
-use Psr\Container\ContainerInterface;
 
 return [
     'plugin_prefix' => 'wpspaghetti_uftyfacf',
@@ -91,7 +91,7 @@ return [
 
     YoutubeApiService::class => \DI\autowire(),
 
-    Logger::class => function (ContainerInterface $container) {
+    Logger::class => static function (ContainerInterface $container) {
         // Use Environment class to detect testing environment
         $minLogLevel = Environment::isTesting() ? 'emergency' : (Environment::isDebug() ? 'debug' : 'info');
 

@@ -24,6 +24,12 @@
         "source": "https://github.com/wp-spaghetti/upload-field-to-youtube-for-acf",
         "docs": "https://github.com/wp-spaghetti/upload-field-to-youtube-for-acf#readme"
     },
+    "funding": [
+        {
+            "type": "custom",
+            "url": "https://buymeacoff.ee/frugan"
+        }
+    ],
     "require": {
         "php": ">=8.0",
         "google/apiclient": "^2.17",
@@ -43,15 +49,15 @@
         "php-parallel-lint/php-parallel-lint": "^1.4",
         "phpro/grumphp-shim": "^2.0",
         "phpstan/extension-installer": "^1.4",
-        "phpstan/phpstan": "^1.12|^2.1",
-        "phpunit/phpunit": "^9.0|^10.0|^11.0|^12.0",
+        "phpstan/phpstan": "^1.12 || ^2.1",
+        "phpunit/phpunit": "^9.0 || ^10.0 || ^11.0 || ^12.0",
         "povils/phpmnd": "^3.6",
-        "rector/rector": "^1.2|^2.1",
+        "rector/rector": "^1.2 || ^2.1",
         "roave/security-advisories": "dev-latest",
         "squizlabs/php_codesniffer": "^3.13",
         "szepeviktor/phpstan-wordpress": "^1.3",
         "tareq1988/wp-php-cs-fixer": "^1.0",
-        "vimeo/psalm": "^5.26|^6.13",
+        "vimeo/psalm": "^5.26 || ^6.13",
         "wordpress-plugin/acf-repeater": "^2.2",
         "wp-coding-standards/wpcs": "^3.1",
         "wpackagist-plugin/acf-repeater-flexible-content-collapser": "^1.2",
@@ -121,20 +127,14 @@
         }
     },
     "scripts": {
+        "pre-autoload-dump": "Google\\Task\\Composer::cleanup",
         "analysis": "grumphp run --tasks=phpstan",
         "check": "grumphp run",
         "ci": "grumphp run --no-interaction",
         "lint": "grumphp run --tasks=phpcsfixer,phplint,phpstan,rector",
-        "pre-autoload-dump": "Google\\Task\\Composer::cleanup",
         "quality": "grumphp run --tasks=phpmnd,phpparser",
         "security": "grumphp run --tasks=securitychecker_roave",
         "test": "grumphp run --tasks=phpunit",
         "test-coverage": "vendor/bin/phpunit --coverage-clover=coverage.xml"
-    },
-    "funding": [
-        {
-            "type": "custom",
-            "url": "https://buymeacoff.ee/frugan"
-        }
-    ]
+    }
 }

@@ -27,7 +27,7 @@ if (!\defined('ABSPATH')) {
 class CacheHandler
 {
     use HookTrait;
-    
+
     /**
      * Minimum required length for access token validation.
      */
@@ -45,14 +45,14 @@ class CacheHandler
         private Logger $logger
     ) {
         $this->init_hook($container);
-        
+
         $this->option_name = $this->container->get('plugin_undername').'__access_token';
     }
 
     /**
      * Get access token with comprehensive cache bypass.
      */
-    public function get_access_token(): null|array|bool
+    public function get_access_token(): array|bool|null
     {
         $cache_info = $this->get_cache_info();
 
@@ -292,7 +292,7 @@ class CacheHandler
     /**
      * Get access token with cache bypass strategies.
      */
-    private function get_with_cache_bypass(): null|array|bool
+    private function get_with_cache_bypass(): array|bool|null
     {
         $max_attempts = 3;
         $attempt = 0;

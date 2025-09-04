@@ -32,7 +32,7 @@ class Field extends \acf_field
 {
     /**
      * Use trait aliases to resolve method name conflicts with the parent acf_field class.
-     * 
+     *
      * The acf_field class already has public add_action() and add_filter() methods,
      * so we alias our trait methods to avoid conflicts while keeping both functionalities available:
      * - $this->add_action() calls the ACF parent method (for WordPress hooks)
@@ -42,7 +42,7 @@ class Field extends \acf_field
         add_action as hook_add_action;
         add_filter as hook_add_filter;
     }
-    
+
     /**
      * Field type title.
      */
@@ -66,7 +66,7 @@ class Field extends \acf_field
         private Logger $logger
     ) {
         $this->init_hook($container);
-        
+
         /*
          * Field type reference used in PHP and JS code.
          *
@@ -680,7 +680,8 @@ class Field extends \acf_field
                 // or when field setting allows it for normal post updates
                 $should_update = $is_form_upload || $field_setting_update;
 
-                $api_update_on_post_update = $this->apply_filters(__FUNCTION__.'_should_update',
+                $api_update_on_post_update = $this->apply_filters(
+                    __FUNCTION__.'_should_update',
                     $should_update,
                     $value,
                     $field,
@@ -789,7 +790,8 @@ class Field extends \acf_field
             // or when field setting allows it for normal post updates
             $should_update = $is_our_ajax_upload || $is_form_upload || $field_setting_update;
 
-            $api_update_on_post_update = $this->apply_filters(__FUNCTION__.'_should_update',
+            $api_update_on_post_update = $this->apply_filters(
+                __FUNCTION__.'_should_update',
                 $should_update,
                 $value,
                 $post_id,
