@@ -1,0 +1,171 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - 'master'
+      - 'support/*'
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+*'
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        mariadb_tag: [
+          latest
+        ]
+        wordpress_tag: [
+          5.9.3,
+          latest
+        ]
+        node_tag: [
+          22
+        ]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v5
+      with:
+        fetch-depth: 0
+        fetch-tags: true
+
+    - name: Set up Docker
+      uses: docker/setup-buildx-action@v1
+
+    - name: Cache Docker layers
+      uses: actions/cache@v4
+      with:
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-buildx-${{ matrix.mariadb_tag }}-${{ matrix.wordpress_tag }}-${{ matrix.node_tag }}-${{ hashFiles('**/Dockerfile') }}
+        restore-keys: |
+          ${{ runner.os }}-buildx-${{ matrix.mariadb_tag }}-${{ matrix.wordpress_tag }}-${{ matrix.node_tag }}-
+
+    - name: Cache npm modules
+      uses: actions/cache@v4
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ matrix.node_tag }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-${{ matrix.node_tag }}-
+
+    #https://stackoverflow.com/a/71334100/3929620
+    - name: Set environment variables
+      run: |
+        PLUGIN_VERSION=$(echo "${GITHUB_REF##*/}" | sed 's/^v//')
+        echo "PLUGIN_VERSION=$PLUGIN_VERSION" >> $GITHUB_ENV
+        IS_VALID_TAG=$([[ "${GITHUB_REF##*/}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] && echo true || echo '')
+        echo "IS_VALID_TAG=$IS_VALID_TAG" >> $GITHUB_ENV
+        echo "IS_LAST_JOB=$([ $(expr ${{ strategy.job-index }} + 1) = ${{ strategy.job-total }} ] && echo true)" >> $GITHUB_ENV
+
+    - name: Print environment variables
+      run: |
+        echo "PLUGIN_VERSION=${{ env.PLUGIN_VERSION }}"
+        echo "IS_VALID_TAG=${{ env.IS_VALID_TAG }}"
+        echo "IS_LAST_JOB=${{ env.IS_LAST_JOB }}"
+
+    - name: Create .env file
+      run: cp .env.dist .env
+
+    # method #1
+    - name: Install mkcert
+      run: |
+        sudo apt-get update && sudo apt-get install libnss3-tools
+        curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64"
+        chmod +x mkcert-v*-linux-amd64
+        sudo cp mkcert-v*-linux-amd64 /usr/local/bin/mkcert
+
+    # method #2
+    #- name: Generate self-signed CA
+    #  uses: kofemann/action-create-certificate@v0.0.4
+    #  with:
+    #    hostcert: 'server.crt'
+    #    hostkey: 'server.key'
+    #    cachain: 'ca-chain.pem'
+
+    #- name: Move certificates
+    #  run: |
+    #    mkdir -p tmp/certs
+    #    mv server.crt server.key ca-chain.pem tmp/certs/
+  
+    - name: Run Makefile 'all' task
+      run: |
+        make \
+          MARIADB_TAG=$MARIADB_TAG \
+          WORDPRESS_TAG=$WORDPRESS_TAG \
+          NODE_TAG=$NODE_TAG \
+          PLUGIN_NAME=${{ github.event.repository.name }} \
+          PLUGIN_VERSION=${{ env.PLUGIN_VERSION }}
+
+    #https://cardinalby.github.io/blog/post/github-actions/implementing-deferred-steps/
+    # method #1
+    #- name: Wait for WordPress setup to complete
+    #  run: |
+    #    timeout=300
+    #    while [ $timeout -gt 0 ]; do
+    #      docker compose exec wordpress test -f /bitnami/wordpress/wp-config.php && break
+    #      echo "Waiting for wp-config.php ($timeout seconds left)..."
+    #      sleep 5
+    #      timeout=$((timeout - 5))
+    #    done
+    #    [ $timeout -gt 0 ] || { echo "Error: Timeout reached, wp-config.php not found"; exit 1; }
+
+    # method #2
+    - name: Wait for WordPress setup to complete
+      run: ./build/docker/logs-catcher.sh wordpress "WordPress setup finished" 180
+
+    - name: Run Makefile 'install' task
+      run: |
+        make install \
+          MARIADB_TAG=$MARIADB_TAG \
+          WORDPRESS_TAG=$WORDPRESS_TAG \
+          NODE_TAG=$NODE_TAG \
+          PLUGIN_NAME=${{ github.event.repository.name }} \
+          PLUGIN_VERSION=${{ env.PLUGIN_VERSION }} \
+          GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+
+    - name: Run Makefile 'test' task
+      run: |
+        make test \
+          PLUGIN_NAME=${{ github.event.repository.name }} \
+          PLUGIN_VERSION=${{ env.PLUGIN_VERSION }}
+
+    #https://github.com/orgs/community/discussions/25641#discussioncomment-3248571
+    - name: Run Makefile 'deploy' task
+      if: |
+        github.ref_type == 'tag' 
+        && env.IS_VALID_TAG
+        && env.IS_LAST_JOB
+      env:
+        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+      run: |
+        make deploy \
+          MODE=production \
+          MARIADB_TAG=$MARIADB_TAG \
+          WORDPRESS_TAG=$WORDPRESS_TAG \
+          NODE_TAG=$NODE_TAG \
+          PLUGIN_NAME=${{ github.event.repository.name }} \
+          PLUGIN_VERSION=${{ env.PLUGIN_VERSION }} \
+          GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create release
+      if: |
+        github.ref_type == 'tag'
+        && env.IS_VALID_TAG
+        && env.IS_LAST_JOB
+      uses: softprops/action-gh-release@v2
+      with:
+        # https://github.com/softprops/action-gh-release
+        # Note that if you intend to run workflows on the release event (on: { release: { types: [published] } }),
+        # you need to use a personal access token for this action, as the default secrets.GITHUB_TOKEN does not trigger another workflow.
+        # See: https://github.com/actions/create-release/issues/71
+        token: ${{ secrets.PRIVATE_GITHUB_TOKEN }}
+        files: dist/${{ github.event.repository.name }}.zip
+        generate_release_notes: true
+          
+    - name: Run Makefile 'down' task
+      run: make down

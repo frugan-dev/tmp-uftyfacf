@@ -1,0 +1,140 @@
+{
+    "name": "wp-spaghetti/upload-field-to-youtube-for-acf",
+    "description": "Upload Field to YouTube for ACF",
+    "license": "GPL-3.0-or-later",
+    "type": "wordpress-plugin",
+    "keywords": [
+        "wordpress",
+        "acf",
+        "upload",
+        "youtube",
+        "video"
+    ],
+    "authors": [
+        {
+            "name": "Frugan",
+            "email": "dev@frugan.it",
+            "homepage": "https://github.com/frugan-dev",
+            "role": "Developer"
+        }
+    ],
+    "homepage": "https://github.com/wp-spaghetti/upload-field-to-youtube-for-acf",
+    "support": {
+        "issues": "https://github.com/wp-spaghetti/upload-field-to-youtube-for-acf/issues",
+        "source": "https://github.com/wp-spaghetti/upload-field-to-youtube-for-acf",
+        "docs": "https://github.com/wp-spaghetti/upload-field-to-youtube-for-acf#readme"
+    },
+    "require": {
+        "php": ">=8.0",
+        "google/apiclient": "^2.17",
+        "php-di/php-di": "^7.1",
+        "wp-spaghetti/wp-env": "^2.0",
+        "wp-spaghetti/wp-logger": "^2.0",
+        "wp-spaghetti/wp-vite": "^1.0"
+    },
+    "require-dev": {
+        "composer/installers": "^1.0 || ^2.0",
+        "ergebnis/composer-normalize": "^2.42",
+        "friendsofphp/php-cs-fixer": "^3.86",
+        "hoppinger/advanced-custom-fields-wpcli": "dev-master",
+        "inpsyde/wonolog": "2.x-dev",
+        "jameelmoses/wordpress-kint-debugger": "^2.0",
+        "nikic/php-parser": "^5.0",
+        "php-parallel-lint/php-parallel-lint": "^1.4",
+        "phpro/grumphp-shim": "^2.0",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^1.12|^2.1",
+        "phpunit/phpunit": "^9.0|^10.0|^11.0|^12.0",
+        "povils/phpmnd": "^3.6",
+        "rector/rector": "^1.2|^2.1",
+        "roave/security-advisories": "dev-latest",
+        "squizlabs/php_codesniffer": "^3.13",
+        "szepeviktor/phpstan-wordpress": "^1.3",
+        "tareq1988/wp-php-cs-fixer": "^1.0",
+        "vimeo/psalm": "^5.26|^6.13",
+        "wordpress-plugin/acf-repeater": "^2.2",
+        "wp-coding-standards/wpcs": "^3.1",
+        "wpackagist-plugin/acf-repeater-flexible-content-collapser": "^1.2",
+        "wpackagist-plugin/advanced-custom-fields": "^5.9 || ^6.0",
+        "wpackagist-plugin/classic-editor": "^1.6",
+        "wpackagist-plugin/debug-bar": "^1.1",
+        "wpackagist-plugin/plugin-check": "^1.0",
+        "wpackagist-plugin/query-monitor": "^3.16",
+        "wpackagist-plugin/rewrite-rules-inspector": "^1.4",
+        "wpackagist-plugin/wp-cfm": "^1.7",
+        "wpackagist-plugin/wp-debugging": "^2.11"
+    },
+    "suggest": {
+        "inpsyde/wonolog": "For enhanced logging capabilities and better debugging experience"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://wpackagist.org",
+            "only": [
+                "wpackagist-plugin/*"
+            ]
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/hoppinger/advanced-custom-fields-wpcli"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/jameelmoses/wordpress-kint-debugger"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/frugan-dev/acf-repeater"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "WpSpaghetti\\UFTYFACF\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "WpSpaghetti\\UFTYFACF\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "ergebnis/composer-normalize": true,
+            "phpro/grumphp-shim": true,
+            "phpstan/extension-installer": true
+        },
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "extra": {
+        "google/apiclient-services": [
+            "Oauth2",
+            "YouTube"
+        ],
+        "installer-paths": {
+            "/bitnami/wordpress/wp-content/plugins/{$name}/": [
+                "type:wordpress-plugin"
+            ]
+        }
+    },
+    "scripts": {
+        "analysis": "grumphp run --tasks=phpstan",
+        "check": "grumphp run",
+        "ci": "grumphp run --no-interaction",
+        "lint": "grumphp run --tasks=phpcsfixer,phplint,phpstan,rector",
+        "pre-autoload-dump": "Google\\Task\\Composer::cleanup",
+        "quality": "grumphp run --tasks=phpmnd,phpparser",
+        "security": "grumphp run --tasks=securitychecker_roave",
+        "test": "grumphp run --tasks=phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-clover=coverage.xml"
+    },
+    "funding": [
+        {
+            "type": "custom",
+            "url": "https://buymeacoff.ee/frugan"
+        }
+    ]
+}

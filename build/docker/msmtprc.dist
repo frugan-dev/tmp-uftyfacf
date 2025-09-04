@@ -1,0 +1,13 @@
+defaults
+auth on
+tls on
+syslog on
+
+account mailpit
+auth off
+tls off
+host {{WORDPRESS_SMTP_HOST}}
+port {{WORDPRESS_SMTP_PORT_NUMBER}}
+from webmaster@localhost
+
+account default : mailpit

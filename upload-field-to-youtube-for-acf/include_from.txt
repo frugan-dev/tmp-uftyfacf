@@ -1,0 +1,16 @@
++ asset/
++ asset/**
++ include/
++ include/**
++ languages/
++ languages/**
++ src/
++ src/**
++ vendor/
+- vendor/bin/
+- vendor/symfony/console/Resources/
++ vendor/**
++ composer.json
++ readme.txt
++ upload-field-to-youtube-for-acf.php
+- *

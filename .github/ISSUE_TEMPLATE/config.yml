@@ -1,0 +1,13 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "💬 Discussion"
+    url: "https://github.com/wp-spaghetti/upload-field-to-youtube-for-acf/discussions"
+    about: "For questions, ideas, and general discussion"
+    
+  - name: "📖 Documentation"
+    url: "https://github.com/wp-spaghetti/upload-field-to-youtube-for-acf"
+    about: "Read the documentation before asking questions"
+    
+  - name: "💌 Security Issues"
+    url: "https://github.com/wp-spaghetti/upload-field-to-youtube-for-acf/security"
+    about: "For security vulnerabilities (private reporting)"

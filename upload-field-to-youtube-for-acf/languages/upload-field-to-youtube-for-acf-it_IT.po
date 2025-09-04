@@ -1,0 +1,322 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: upload-field-to-youtube-for-acf\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/tags/_s\n"
+"POT-Creation-Date: 2025-07-26 12:20+0200\n"
+"PO-Revision-Date: 2025-07-26 12:22+0200\n"
+"Last-Translator: \n"
+"Language-Team: Italian\n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.6\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_ex;_x;_ex;_n:1,2;_n:1,2,4c;_nx:1,2;_nx:1,2,4c;_n_noop:1,2;_n_noop:1,2,4c;_nx_noop:1,2;_nx_noop:1,2,4c;esc_html__;esc_html_e;esc_html_x;esc_attr__;esc_attr_e;esc_attr_x\n"
+"X-Poedit-Basepath: ..\n"
+"X-Crowdin-Project: upload-field-to-youtube-for-acf\n"
+"X-Crowdin-Project-ID: 734615\n"
+"X-Crowdin-Language: it\n"
+"X-Crowdin-File: upload-field-to-youtube-for-acf.pot\n"
+"X-Crowdin-File-ID: 24\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SearchPathExcluded-1: *.rst\n"
+
+#: src/Bootstrap.php:96 src/Field.php:69
+msgid "YouTube Uploader"
+msgstr ""
+
+#: src/Bootstrap.php:98
+#, php-format
+msgid "%1$s plugin is required."
+msgstr "È richiesto il plugin %1$s ."
+
+#: src/Bootstrap.php:98
+msgid "Advanced Custom Fields"
+msgstr ""
+
+#: src/Field.php:62
+msgid "Upload Field to YouTube for ACF"
+msgstr ""
+
+#: src/Field.php:79
+msgid "Upload Field to YouTube for ACF is a WordPress plugin that allows you to upload videos directly to YouTube via API from the WordPress admin area and/or select existing videos on your YouTube channel based on playlists."
+msgstr "Upload Field to YouTube for ACF è un plugin di WordPress che consente di caricare video direttamente su YouTube tramite API dall'area di amministrazione di WordPress e/o di selezionare video esistenti sul tuo canale YouTube in base alle playlist."
+
+#: src/Field.php:117
+msgid "Before uploading your video, make sure you:"
+msgstr "Prima di caricare il tuo video, assicurati di:"
+
+#: src/Field.php:119 src/Field.php:121
+#, php-format
+msgid "Enter a \"%1$s\""
+msgstr "Inserire un \"%1$s\""
+
+#: src/Field.php:119 src/Field.php:597
+msgid "Title"
+msgstr "Titolo"
+
+#: src/Field.php:121
+msgid "Description"
+msgstr "Descrizione"
+
+#: src/Field.php:123
+#, php-format
+msgid "Select a \"%1$s\""
+msgstr "Selezionare un \"%1$s\""
+
+#: src/Field.php:123
+msgid "Video file"
+msgstr "File video"
+
+#: src/Field.php:124
+msgid "Preparing to upload your file"
+msgstr "Preparazione al caricamento del file"
+
+#: src/Field.php:125
+msgid "Loading"
+msgstr ""
+
+#: src/Field.php:126
+msgid "Wait please"
+msgstr "Attendere prego"
+
+#: src/Field.php:127
+msgid "Video uploaded successfully."
+msgstr "Video caricato con successo."
+
+#: src/Field.php:128
+msgid "Error while uploading."
+msgstr "Errore nel caricamento."
+
+#: src/Field.php:129
+msgid "Network error while uploading."
+msgstr "Errore di rete durante il caricamento."
+
+#: src/Field.php:130
+msgid "The following error occurred:"
+msgstr "Si è verificato l'errore seguente:"
+
+#: src/Field.php:131
+msgid "It is recommended to save the post by clicking the \"Publish\" button."
+msgstr "Si consiglia di salvare il post cliccando sul pulsante \"Pubblica\"."
+
+#: src/Field.php:132
+msgid "Attention"
+msgstr "Attenzione"
+
+#: src/Field.php:133
+msgid "There was a technical problem, please try again later."
+msgstr "Si è verificato un problema tecnico, riprova più tardi."
+
+#: src/Field.php:134 src/Field.php:474
+msgid "select"
+msgstr "seleziona"
+
+#: src/Field.php:199
+msgid "Successfully logged out from YouTube."
+msgstr "Disconnesso con successo da YouTube."
+
+#: src/Field.php:207
+msgid "Security check failed"
+msgstr "Controllo di sicurezza fallito"
+
+#: src/Field.php:211
+msgid "Insufficient permissions"
+msgstr "Permessi insufficienti"
+
+#: src/Field.php:217
+msgid "Plugin settings saved successfully"
+msgstr "Impostazioni del plugin salvate con successo"
+
+#: src/Field.php:221
+msgid "Settings saved successfully."
+msgstr "Impostazioni salvate con successo."
+
+#: src/Field.php:241 src/Field.php:719
+msgid "Authorize App"
+msgstr "Autorizza l'applicazione"
+
+#: src/Field.php:278
+msgid "Category ID"
+msgstr "ID Categoria"
+
+#: src/Field.php:283 src/Field.php:301 src/Field.php:317 src/Field.php:338
+#: src/Field.php:354 src/Field.php:370 src/Field.php:386 src/Field.php:402
+#, php-format
+msgid "Default: %1$s"
+msgstr "Predefinito: %1$s"
+
+#: src/Field.php:296
+msgid "Tags"
+msgstr ""
+
+#: src/Field.php:312
+msgid "Privacy status"
+msgstr "Stato della privacy"
+
+#: src/Field.php:323
+msgid "Unlisted"
+msgstr ""
+
+#: src/Field.php:324
+msgid "Private"
+msgstr ""
+
+#: src/Field.php:325
+msgid "Public"
+msgstr ""
+
+#: src/Field.php:333
+msgid "Made for kids"
+msgstr "Realizzato per i bambini"
+
+#: src/Field.php:338 src/Field.php:354 src/Field.php:370 src/Field.php:386
+#: src/Field.php:402
+msgid "Yes"
+msgstr "Si"
+
+#: src/Field.php:338 src/Field.php:354 src/Field.php:370 src/Field.php:386
+#: src/Field.php:402
+msgid "No"
+msgstr ""
+
+#: src/Field.php:349
+msgid "Allow upload"
+msgstr "Consenti upload"
+
+#: src/Field.php:365
+msgid "Allow select"
+msgstr "Consenti selezione"
+
+#: src/Field.php:381
+msgid "Update YouTube video on post update"
+msgstr "Aggiorna il video di YouTube dopo l'aggiornamento del post"
+
+#: src/Field.php:397
+msgid "Delete YouTube video on post delete"
+msgstr "Elimina il video di YouTube dopo l'eliminazione del post"
+
+#: src/Field.php:439
+msgid "Upload via API"
+msgstr ""
+
+#: src/Field.php:447
+msgid "Select from channel"
+msgstr "Seleziona dal canale"
+
+#: src/Field.php:458
+msgid "Upload"
+msgstr ""
+
+#: src/Field.php:471
+msgid "Playlist"
+msgstr ""
+
+#: src/Field.php:486
+msgid "Video"
+msgstr ""
+
+#: src/Field.php:491
+msgid "No playlists available"
+msgstr "Nessuna playlist disponibile"
+
+#: src/Field.php:504
+msgid "You are not logged in"
+msgstr "Non hai effettuato l'accesso"
+
+#: src/Field.php:578 src/Field.php:597 src/Field.php:978 src/Field.php:984
+#: src/Field.php:1049 src/Field.php:1055 src/Field.php:1066 src/Field.php:1088
+#: src/Field.php:1101
+#, php-format
+msgid "Empty field \"%1$s\""
+msgstr "Campo vuoto \"%1$s\""
+
+#: src/Field.php:613 src/Field.php:1026
+#, php-format
+msgid "Video \"%1$s\" retrieved successfully"
+msgstr "Video \"%1$s\" recuperato con successo"
+
+#: src/Field.php:616
+msgid "This video is not associated with your authorized YouTube account"
+msgstr "Questo video non è associato al tuo account YouTube autorizzato"
+
+#: src/Field.php:669
+#, php-format
+msgid "Video \"%1$s\" updated successfully"
+msgstr "Video \"%1$s\" aggiornato con successo"
+
+#: src/Field.php:697
+#, php-format
+msgid "Video \"%1$s\" deleted successfully"
+msgstr "Video \"%1$s\" cancellato con successo"
+
+#: src/Field.php:731
+msgid "Logout from YouTube"
+msgstr "Logout da YouTube"
+
+#: src/Field.php:747
+msgid "Save Settings"
+msgstr "Salva Impostazioni"
+
+#: src/Field.php:826
+#, php-format
+msgid "Unable to retrieve \"%1$s\""
+msgstr "Impossibile recuperare \"%1$s\""
+
+#: src/Field.php:858
+msgid "Missing or wrong OAuth credentials."
+msgstr "Credenziali OAuth mancanti o errate."
+
+#: src/Field.php:872
+msgid "App not authorized, contact your system administrator."
+msgstr "App non autorizzata, contattare l'amministratore di sistema."
+
+#: src/Field.php:889
+msgid "App authorized! You can now upload videos to YouTube."
+msgstr "App autorizzata! Ora puoi caricare video su YouTube."
+
+#: src/Field.php:901
+msgid "Authorize the app to upload videos to YouTube:"
+msgstr "Autorizza l'app a caricare video su YouTube:"
+
+#: src/Field.php:912
+#, php-format
+msgid "App authorized! You are logged in as: %1$s"
+msgstr "App autorizzata! Hai effettuato l'accesso come: %1$s"
+
+#: src/Field.php:932
+msgid "Playlists retrieved successfully"
+msgstr "Playlist recuperata con successo"
+
+#: src/Field.php:991 src/Field.php:1095
+#, php-format
+msgid "Unable to retrieve field \"%1$s\""
+msgstr "Impossibile recuperare il campo \"%1$s\""
+
+#: src/Field.php:1030
+#, php-format
+msgid "Unable to retrieve \"%1$s\" from response headers"
+msgstr "Impossibile recuperare \"%1$s\" dalle intestazioni della risposta"
+
+#: src/Field.php:1060
+#, php-format
+msgid "Insufficient permissions to save video \"%1$s\""
+msgstr "Autorizzazioni insufficienti per salvare il video \"%1$s\""
+
+#: src/Field.php:1075
+#, php-format
+msgid "Unable to save video \"%1$s\" to field \"%2$s\" in post ID \"%3$d\""
+msgstr "Impossibile salvare il video \"%1$s\" nel campo \"%2$s\" del post ID \"%3$d\"."
+
+#: src/Field.php:1115
+#, php-format
+msgid "Videos retrieved successfully by playlist ID \"%1$s\""
+msgstr "Video recuperati con successo dall'ID playlist \"%1$s\""
+
+#: src/Field.php:1147
+#, php-format
+msgid "Unable to retrieve videos by playlist ID \"%1$s\""
+msgstr "Impossibile recuperare i video tramite l'ID playlist \"%1$s\""
