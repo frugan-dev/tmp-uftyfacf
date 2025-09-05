@@ -20,6 +20,7 @@ use WpSpaghetti\UFTYFACF\Service\YoutubeApiService;
 use WpSpaghetti\UFTYFACF\Trait\HookTrait;
 use WpSpaghetti\WpEnv\Environment;
 use WpSpaghetti\WpLogger\Logger;
+use WpSpaghetti\WpVite\Vite;
 
 if (!\defined('ABSPATH')) {
     exit;
@@ -590,23 +591,19 @@ class Field extends \acf_field
         // If you're going to submit your plugin to the wordpress.org repo, then you need to load the CSS locally
         // (see: https://developer.wordpress.org/plugins/wordpress-org/detailed-plugin-guidelines/#8-plugins-may-not-send-executable-code-via-third-party-systems).
         // https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css
-        wp_enqueue_style(
+        Vite::enqueueStyle(
             'jquery-ui-css',
-            $url.'asset/css/jquery-ui.min'.($cache_busting ? '.'.filemtime($path.'asset/css/jquery-ui.min.css') : '').'.css',
-            ['acf-input'],
-            $version
+            'css/jquery-ui',
+            ['acf-input']
         );
 
         add_thickbox();
 
-        wp_register_script(
+        Vite::enqueueScript(
             $this->container->get('plugin_name'),
-            $url.'asset/js/main'.($cache_busting ? '.'.filemtime($path.'asset/js/main.js') : '').'.js',
+            'js/main',
             ['acf-input'],
-            $version,
-            [
-                'in_footer' => true,
-            ]
+            true
         );
 
         // $object_name is the name of the variable which will contain the data.
@@ -621,15 +618,11 @@ class Field extends \acf_field
             'debug' => $this->env['debug'],
         ]);
 
-        wp_register_style(
+        Vite::enqueueStyle(
             $this->container->get('plugin_name'),
-            $url.'asset/css/main'.($cache_busting ? '.'.filemtime($path.'asset/css/main.css') : '').'.css',
-            ['acf-input'],
-            $version
+            'css/main',
+            ['acf-input']
         );
-
-        wp_enqueue_script($this->container->get('plugin_name'));
-        wp_enqueue_style($this->container->get('plugin_name'));
     }
 
     /**

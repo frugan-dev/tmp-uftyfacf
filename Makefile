@@ -168,8 +168,9 @@ up:
 	@MARIADB_TAG=${MARIADB_TAG} WORDPRESS_TAG=${WORDPRESS_TAG} NODE_TAG=${NODE_TAG} $(DOCKER_COMPOSE) up -d --build
 
 install-node: clean-node
-	@echo "[node] Installing dependencies"
-	@$(DOCKER_COMPOSE) exec -u$(NODE_CONTAINER_USER) $(NODE_CONTAINER_NAME) sh -c 'cd $(NODE_CONTAINER_WORKSPACE_DIR)/build/front && npm install && npm run develop && npm run production'
+	@echo "[node] Installing dependencies ($(MODE))"
+	@$(DOCKER_COMPOSE) exec -u$(NODE_CONTAINER_USER) $(NODE_CONTAINER_NAME) sh -c 'cd $(NODE_CONTAINER_WORKSPACE_DIR)/$(PLUGIN_NAME) && npm install'
+	@$(DOCKER_COMPOSE) exec -u$(NODE_CONTAINER_USER) $(NODE_CONTAINER_NAME) sh -c 'cd $(NODE_CONTAINER_WORKSPACE_DIR)/$(PLUGIN_NAME) && npm run build'
 
 install-wordpress: clean-wordpress
 ifneq ($(GITHUB_TOKEN),)
@@ -288,7 +289,7 @@ deploy-svn:
 
 clean-node: 
 	@echo "[node] Cleaning artifacts"
-	@$(DOCKER_COMPOSE) exec -u$(NODE_CONTAINER_USER) $(NODE_CONTAINER_NAME) sh -c 'cd $(NODE_CONTAINER_WORKSPACE_DIR) && rm -rf build/front/node_modules build/front/package-lock.json $(PLUGIN_NAME)/asset'
+	@$(DOCKER_COMPOSE) exec -u$(NODE_CONTAINER_USER) $(NODE_CONTAINER_NAME) sh -c 'cd $(NODE_CONTAINER_WORKSPACE_DIR)/$(PLUGIN_NAME) && rm -rf node_modules package-lock.json assets'
 
 clean-wordpress: 
 	@echo "[wordpress] Cleaning artifacts"

@@ -1,0 +1,29 @@
+/* Override WordPress spinner styles */
+.upload_field_to_youtube_for_acf__wrapper .upload_field_to_youtube_for_acf__spinner {
+    display: none;
+}
+.upload_field_to_youtube_for_acf__wrapper .upload_field_to_youtube_for_acf__spinner .spinner {
+    float: none;
+    margin: 0;
+}
+
+/* Response messages using WordPress notice styles */
+.upload_field_to_youtube_for_acf__response {
+    margin: 10px 0;
+    padding: 0;
+}
+.upload_field_to_youtube_for_acf__response.notice {
+    padding: 8px 12px;
+    margin: 10px 0;
+}
+
+/* Manual video ID input container */
+.upload_field_to_youtube_for_acf__manual_video_id_container {
+    margin-top: 15px;
+}
+
+/* Override WordPress postbox submit float */
+.upload_field_to_youtube_for_acf__manual_video_id_container .submit {
+    float: none;
+    text-align: left;
+}

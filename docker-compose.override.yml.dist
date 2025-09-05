@@ -1,12 +1,12 @@
-#services:
+services:
 
   #wordpress:
   #  #https://stackoverflow.com/a/65592942/3929620
   #  #https://github.com/docker/for-mac/issues/5873
   #  platform: linux/x86_64
 
-  #node:
-  #  environment:
+  node:
+    environment:
   #    #https://github.com/vercel/next.js/issues/30296#issuecomment-952128906
   #    NODE_OPTIONS: --openssl-legacy-provider
   #    #https://github.com/lovell/sharp/issues/3894#issuecomment-1851896550
@@ -16,3 +16,6 @@
   #    #VIPS_NOVECTOR: true
   #    #https://stackoverflow.com/a/52479399/3929620
   #    #NODE_TLS_REJECT_UNAUTHORIZED: 0
+  #    #https://github.com/eslint/eslint/discussions/18484#discussioncomment-9516248
+  #    ESLINT_USE_FLAT_CONFIG: false
+      VITE_HMR_CLIENT_PORT: ${NODE_PORT:-3000}

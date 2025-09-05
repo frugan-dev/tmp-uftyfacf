@@ -5,29 +5,29 @@ import fs from 'fs';
 
 // 🔧 Vite Dev Server & HMR Configuration Notes:
 //
-// - `server` configures the main Vite development server that servesstatic assets (JS, CSS, etc.)
+// - `server` configures the main Vite development server that serves static assets (JS, CSS, etc.)
 //   and the Vite client injected into the page.
 //
-// - `hmr` (Hot Module Replacement) is a separate WebSocket connectionused by the browser
-//   to receive live updates when files change — it is distinct from themain HTTP server.
+// - `hmr` (Hot Module Replacement) is a separate WebSocket connection used by the browser
+//   to receive live updates when files change — it is distinct from the main HTTP server.
 //
-// - `server.port` is the internal port where the Vite dev server listens(e.g. 3000).
+// - `server.port` is the internal port where the Vite dev server listens (e.g. 3000).
 //   This is the port exposed inside the Docker container.
 //
-// - `hmr.port` is the internal WebSocket server port (usually same as`server.port`).
+// - `hmr.port` is the internal WebSocket server port (usually same as `server.port`).
 //   This tells Vite where to bind the WebSocket server.
 //
-// - `hmr.clientPort` is the port the browser will use to connect to theHMR WebSocket.
-//   This must match the public port exposed on the host (e.g. via Dockeror a reverse proxy).
+// - `hmr.clientPort` is the port the browser will use to connect to the HMR WebSocket.
+//   This must match the public port exposed on the host (e.g. via Docker or a reverse proxy).
 //
 // ✅ Example (Docker use case):
 //   - Vite server inside container listens on 3000
 //   - Docker maps host port 1337 to container port 3000
 //   - Browser accesses https://localhost:1337
-//   => Use `server.port = 3000`, `hmr.port = 3000`, `hmr.clientPort =1337`
+//   => Use `server.port = 3000`, `hmr.port = 3000`, `hmr.clientPort = 1337`
 //
-// ❌ Without `clientPort`, browser may try to connect to wss:/localhost:3000,
-//    which can fail if port 3000 is not directly accessible from outsidethe container.
+// ❌ Without `clientPort`, browser may try to connect to wss://localhost:3000,
+//    which can fail if port 3000 is not directly accessible from outside the container.
 // Environment and configuration utilities
 const ENV = {
   isCI: process.env.CI || process.env.GITLAB_CI || process.env.GITHUB_ACTIONS || process.env.JENKINS_URL || process.env.TRAVIS || process.env.CIRCLECI,  // Support major CI platforms
@@ -247,43 +247,7 @@ export default defineConfig(() => {
       preprocessorOptions: {
         scss: {
           // Global SCSS variables/mixins can be added here
-          additionalData: `
-            // Use modern Sass color functions - MUST be first
-            @use "sass:color";
-            @use "sass:math";
-            
-            // WordPress breakpoints
-            $mobile: 768px;
-            $tablet: 1024px;
-            $desktop: 1200px;
-            $wide: 1400px;
-            
-            // Common mixins
-            @mixin mobile { @media (max-width: #{$mobile - 1px}) { @content; } }
-            @mixin tablet { @media (min-width: #{$mobile}) and (max-width: #{$tablet - 1px}) { @content; } }
-            @mixin desktop { @media (min-width: #{$tablet}) and (max-width: #{$desktop - 1px}) { @content; } }
-            @mixin wide { @media (min-width: #{$desktop}) { @content; } }
-            
-            // Utility mixins
-            @mixin clearfix {
-              &::after {
-                content: "";
-                display: table;
-                clear: both;
-              }
-            }
-            
-            @mixin visually-hidden {
-              position: absolute !important;
-              width: 1px !important;
-              height: 1px !important;
-              padding: 0 !important;
-              margin: -1px !important;
-              overflow: hidden !important;
-              clip: rect(0, 0, 0, 0) !important;
-              border: 0 !important;
-            }
-          `,
+          //additionalData: ``,
           
           // Silence deprecation warnings
           quietDeps: true,

@@ -1,6 +1,6 @@
 .phpunit.cache/
 .psalm/
-asset/
+assets/
 composer.develop.*
 
 grumphp.yml

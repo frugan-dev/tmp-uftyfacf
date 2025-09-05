@@ -1,0 +1,48 @@
+{
+  "name": "upload-field-to-youtube-for-acf",
+  "version": "1.0.0",
+  "description": "Upload Field to YouTube for ACF assets build system with Vite.js",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:polling": "VITE_USE_POLLING=true vite",
+    "build": "vite build",
+    "build:prod": "NODE_ENV=production vite build",
+    "build:watch": "vite build --watch",
+    "build:watch:prod": "NODE_ENV=production vite build --watch",
+    "preview": "vite preview",
+    "clean": "rm -rf assets/",
+    "clean:cache": "rm -rf node_modules/.vite/",
+    "clean:all": "npm run clean && npm run clean:cache",
+    "clean:sourcemaps": "find assets -name '*.map' -delete",
+    "analyze": "npx vite-bundle-analyzer assets/.vite/manifest.json -m static -o false",
+    "analyze:legacy": "npx vite-bundle-analyzer assets/manifest.json -m static -o false",
+    "prebuild": "npm run clean",
+    "preobfuscate": "npm run build",
+    "postbuild:prod": "npm run clean:sourcemaps",
+    "debug": "DEBUG=vite:* npm run dev",
+    "debug:config": "vite --debug config",
+    "debug:info": "node -e \"console.log(JSON.stringify(process.env, null, 2))\" | grep VITE"
+  },
+  "devDependencies": {
+    "glob": "^11.0.3",
+    "javascript-obfuscator": "^4.1.0",
+    "nodemon": "^3.1.10",
+    "sass": "^1.69.0",
+    "vite": "^7.0.6",
+    "vite-bundle-analyzer": "^1.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "author": "Frugan <dev@frugan.it>",
+  "license": "GPL-3.0-or-later"
+}
