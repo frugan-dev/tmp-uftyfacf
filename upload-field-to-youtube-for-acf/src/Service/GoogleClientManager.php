@@ -133,6 +133,7 @@ class GoogleClientManager
                 // use `$exception->getMessage()` instead of `$exception`, because Wonolog
                 // assigns the ERROR level to messages that are instances of Throwable
                 $this->logger->warning($exception->getMessage(), [
+                    'exception'=> $exception,
                     'access_token' => $this->cache_handler->sanitize_token_for_logging($access_token),
                     'token_type' => \gettype($access_token),
                     'token_keys' => \is_array($access_token) ? array_keys($access_token) : 'not_array',

@@ -313,9 +313,7 @@ class YoutubeApiService
                 ]);
 
                 if (is_wp_error($response)) {
-                    $this->logger->error('Chunk upload error', [
-                        'error' => $response->get_error_message(),
-                    ]);
+                    $this->logger->error($response);
 
                     throw new \Exception($response->get_error_message());
                 }

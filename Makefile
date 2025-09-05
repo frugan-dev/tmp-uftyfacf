@@ -34,7 +34,7 @@ WORDPRESS_SMTP_PROTOCOL ?= tls
 WORDPRESS_MTA ?=
 
 NODE_TAG ?= latest
-NODE_PORT ?= 3000
+NODE_PORT ?= 1337
 NODE_ENV ?= develop
 NODE_DEBUG ?=
 NODE_LOG_LEVEL ?=
@@ -154,8 +154,8 @@ endif
 
 wait:
 	@echo "Waiting for services to be ready"
-	@$(TMP_DIR)/wait-for-it.sh localhost:80 --timeout=300 --strict -- echo "WordPress is up"
 	@$(TMP_DIR)/wait-for-it.sh localhost:$(NODE_PORT) --timeout=300 --strict -- echo "Node is up"
+	@$(TMP_DIR)/wait-for-it.sh localhost:80 --timeout=300 --strict -- echo "WordPress is up"
 
 	@echo "Waiting for WordPress to complete setup"
 #https://cardinalby.github.io/blog/post/github-actions/implementing-deferred-steps/

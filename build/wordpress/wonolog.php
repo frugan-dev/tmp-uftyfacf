@@ -16,6 +16,7 @@ use Monolog\Formatter\HtmlFormatter;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\ErrorLogHandler;
 use Monolog\Handler\NativeMailerHandler;
+use Monolog\Processor\PsrLogMessageProcessor;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -85,6 +86,8 @@ add_action(Configurator::ACTION_SETUP, function (Configurator $configurator) {
         ->addActionListener(new HttpApiListener(LogLevel::WARNING))
         ->pushHandler($defaultHandler)
         ->pushHandler($emailHandler)
+        // for placeholder substitution
+        ->pushProcessor('psr-log-message-processor', new PsrLogMessageProcessor())
         ->pushProcessor('extra-processor', function (array $record) {
             $record['extra']['_REQUEST'] = $_REQUEST;
             $record['extra']['_POST'] = $_POST;

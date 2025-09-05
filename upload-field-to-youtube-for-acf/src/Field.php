@@ -17,7 +17,7 @@ use DI\Container;
 use WpSpaghetti\UFTYFACF\Service\CacheHandler;
 use WpSpaghetti\UFTYFACF\Service\GoogleClientManager;
 use WpSpaghetti\UFTYFACF\Service\YoutubeApiService;
-use WpSpaghetti\UFTYFACF\Trait\HookTrait;
+use WpSpaghetti\UFTYFACF\Trait\BaseHookTrait;
 use WpSpaghetti\WpEnv\Environment;
 use WpSpaghetti\WpLogger\Logger;
 use WpSpaghetti\WpVite\Vite;
@@ -31,18 +31,7 @@ if (!\defined('ABSPATH')) {
  */
 class Field extends \acf_field
 {
-    /**
-     * Use trait aliases to resolve method name conflicts with the parent acf_field class.
-     *
-     * The acf_field class already has public add_action() and add_filter() methods,
-     * so we alias our trait methods to avoid conflicts while keeping both functionalities available:
-     * - $this->add_action() calls the ACF parent method (for WordPress hooks)
-     * - $this->hook_add_action() calls our trait method (for plugin-prefixed hooks)
-     */
-    use HookTrait {
-        add_action as hook_add_action;
-        add_filter as hook_add_filter;
-    }
+    use BaseHookTrait;
 
     /**
      * Field type title.
@@ -723,6 +712,7 @@ class Field extends \acf_field
             // use `$exception->getMessage()` instead of `$exception`, because Wonolog
             // assigns the ERROR level to messages that are instances of Throwable
             $this->logger->warning($exception->getMessage(), [
+                'exception'=> $exception,
                 'video_id' => $value,
                 'field' => $field,
                 'input' => $input,
@@ -1361,6 +1351,7 @@ class Field extends \acf_field
             // use `$exception->getMessage()` instead of `$exception`, because Wonolog
             // assigns the ERROR level to messages that are instances of Throwable
             $this->logger->warning($exception->getMessage(), [
+                'exception'=> $exception,
                 'field_key' => $field_key,
                 'field' => $field,
                 'playlist_id' => $playlist_id,
