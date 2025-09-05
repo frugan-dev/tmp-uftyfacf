@@ -18,6 +18,7 @@ use Google\Client;
 use Google\Service\Oauth2;
 use Google\Service\YouTube;
 use WpSpaghetti\UFTYFACF\Trait\HookTrait;
+use WpSpaghetti\WpEnv\Environment;
 use WpSpaghetti\WpLogger\Logger;
 
 if (!\defined('ABSPATH')) {

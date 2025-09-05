@@ -180,10 +180,10 @@ The plugin supports several optional configuration constants in `wp-config.php`:
 
 ```php
 // Enable filename-based cache busting for CSS/JS assets
-define('WPSPAGHETTI_UFTYFACF_CACHE_BUSTING', true);
+define('VITE_CACHE_BUSTING_ENABLED_ENABLED', true);
 
 // Enable dependency injection container compilation cache (default: true)
-define('WPSPAGHETTI_UFTYFACF_BUILDER_CACHE', true);
+define('WPSPAGHETTI_UFTYFACF_BUILDER_CACHE_ENABLED', true);
 ```
 
 For more information on cache busting, see filename-based cache busting on [Nginx](https://github.com/h5bp/server-configs-nginx/blob/main/h5bp/location/web_performance_filename-based_cache_busting.conf) and [Apache](https://github.com/h5bp/server-configs-apache/blob/main/h5bp/web_performance/filename-based_cache_busting.conf).
@@ -192,7 +192,7 @@ For more information on cache busting, see filename-based cache busting on [Ngin
 
 ```php
 // Enable server-side upload mode (browser → WordPress → YouTube, default: false)
-define('WPSPAGHETTI_UFTYFACF_SERVER_UPLOAD', true);
+define('WPSPAGHETTI_UFTYFACF_SERVER_UPLOAD_ENABLED', true);
 
 // Maximum chunks for resumable uploads (default: 10000)
 define('WPSPAGHETTI_UFTYFACF_RESUMABLE_UPLOAD_MAX_CHUNKS', 10000);

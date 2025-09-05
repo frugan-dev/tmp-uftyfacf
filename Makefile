@@ -1,5 +1,9 @@
 #https://stackoverflow.com/a/44061904/3929620
-.PHONY: all install test deploy setup check set-env wait up install-wordpress test-wordpress deploy-develop deploy-production clean-wordpress down help
+# 1. Minimal approach - direct entry points only
+.PHONY: all setup check up install dev test deploy down help
+
+# 2. Purist approach - all entry points (technically correct)
+#.PHONY: (all entry points)
 
 include .env
 
@@ -63,8 +67,9 @@ GITHUB_TOKEN ?=
 
 WPSPAGHETTI_UFTYFACF_GOOGLE_OAUTH_CLIENT_ID ?=
 WPSPAGHETTI_UFTYFACF_GOOGLE_OAUTH_CLIENT_SECRET ?=
-WPSPAGHETTI_UFTYFACF_SERVER_UPLOAD ?= false
-WPSPAGHETTI_UFTYFACF_CACHE_BUSTING ?= false
+WPSPAGHETTI_UFTYFACF_SERVER_UPLOAD_ENABLED ?= false
+
+VITE_CACHE_BUSTING_ENABLED ?= false
 
 MODE ?= develop
 
@@ -85,9 +90,11 @@ all: setup up
 
 setup: check .gitconfig docker-compose.override.yml $(TMP_DIR)/certs $(TMP_DIR)/wait-for-it.sh set-env
 
-install: all wait install-wordpress
+install: all wait install-node install-wordpress
 
-test: setup test-wordpress
+dev: setup dev-node
+
+test: setup test-node test-wordpress
 
 deploy: install deploy-zip
 ifeq ($(and $(GITHUB_ACTIONS),$(MODE)),false production)
@@ -198,8 +205,8 @@ endif
 	@echo "[wordpress] Updating wp-config.php ($(MODE))"
 	@$(DOCKER_COMPOSE) exec -u$(WORDPRESS_CONTAINER_USER) $(WORDPRESS_CONTAINER_NAME) sh -c "sed -i '/define('\''WPSPAGHETTI_UFTYFACF_GOOGLE_OAUTH_CLIENT_ID'\'',/d' $${WORDPRESS_BASE_DIR:-/bitnami/wordpress}/wp-config.php && sed -i '1a define('\''WPSPAGHETTI_UFTYFACF_GOOGLE_OAUTH_CLIENT_ID'\'', '\''${WPSPAGHETTI_UFTYFACF_GOOGLE_OAUTH_CLIENT_ID}'\'');' $${WORDPRESS_BASE_DIR:-/bitnami/wordpress}/wp-config.php"
 	@$(DOCKER_COMPOSE) exec -u$(WORDPRESS_CONTAINER_USER) $(WORDPRESS_CONTAINER_NAME) sh -c "sed -i '/define('\''WPSPAGHETTI_UFTYFACF_GOOGLE_OAUTH_CLIENT_SECRET'\'',/d' $${WORDPRESS_BASE_DIR:-/bitnami/wordpress}/wp-config.php && sed -i '2a define('\''WPSPAGHETTI_UFTYFACF_GOOGLE_OAUTH_CLIENT_SECRET'\'', '\''${WPSPAGHETTI_UFTYFACF_GOOGLE_OAUTH_CLIENT_SECRET}'\'');' $${WORDPRESS_BASE_DIR:-/bitnami/wordpress}/wp-config.php"
-	@$(DOCKER_COMPOSE) exec -u$(WORDPRESS_CONTAINER_USER) $(WORDPRESS_CONTAINER_NAME) sh -c "sed -i '/define('\''WPSPAGHETTI_UFTYFACF_SERVER_UPLOAD'\'',/d' $${WORDPRESS_BASE_DIR:-/bitnami/wordpress}/wp-config.php && sed -i '3a define('\''WPSPAGHETTI_UFTYFACF_SERVER_UPLOAD'\'', ${WPSPAGHETTI_UFTYFACF_SERVER_UPLOAD});' $${WORDPRESS_BASE_DIR:-/bitnami/wordpress}/wp-config.php"
-	@$(DOCKER_COMPOSE) exec -u$(WORDPRESS_CONTAINER_USER) $(WORDPRESS_CONTAINER_NAME) sh -c "sed -i '/define('\''WPSPAGHETTI_UFTYFACF_CACHE_BUSTING'\'',/d' $${WORDPRESS_BASE_DIR:-/bitnami/wordpress}/wp-config.php && sed -i '3a define('\''WPSPAGHETTI_UFTYFACF_CACHE_BUSTING'\'', ${WPSPAGHETTI_UFTYFACF_CACHE_BUSTING});' $${WORDPRESS_BASE_DIR:-/bitnami/wordpress}/wp-config.php"
+	@$(DOCKER_COMPOSE) exec -u$(WORDPRESS_CONTAINER_USER) $(WORDPRESS_CONTAINER_NAME) sh -c "sed -i '/define('\''WPSPAGHETTI_UFTYFACF_SERVER_UPLOAD_ENABLED'\'',/d' $${WORDPRESS_BASE_DIR:-/bitnami/wordpress}/wp-config.php && sed -i '3a define('\''WPSPAGHETTI_UFTYFACF_SERVER_UPLOAD_ENABLED'\'', ${WPSPAGHETTI_UFTYFACF_SERVER_UPLOAD_ENABLED});' $${WORDPRESS_BASE_DIR:-/bitnami/wordpress}/wp-config.php"
+	@$(DOCKER_COMPOSE) exec -u$(WORDPRESS_CONTAINER_USER) $(WORDPRESS_CONTAINER_NAME) sh -c "sed -i '/define('\''VITE_CACHE_BUSTING_ENABLED'\'',/d' $${WORDPRESS_BASE_DIR:-/bitnami/wordpress}/wp-config.php && sed -i '3a define('\''VITE_CACHE_BUSTING_ENABLED'\'', ${VITE_CACHE_BUSTING_ENABLED});' $${WORDPRESS_BASE_DIR:-/bitnami/wordpress}/wp-config.php"
 	
 	@echo "[wordpress] Installing dependencies ($(MODE))"
 # PHP 7.x and 8.x interpret composer.json's `extra.installer-paths` differently, perhaps due to different versions of Composer.
@@ -244,9 +251,13 @@ endif
 	@echo "[wordpress] Starting MTA daemon ($(MODE))"
 	@$(DOCKER_COMPOSE) exec -u$(WORDPRESS_CONTAINER_USER) $(WORDPRESS_CONTAINER_NAME) /usr/local/bin/mta-manager.sh start
 
+dev-node:
+	@echo "[node] Starting development server"
+	@$(DOCKER_COMPOSE) exec -u$(NODE_CONTAINER_USER) $(NODE_CONTAINER_NAME) sh -c 'cd $(NODE_CONTAINER_WORKSPACE_DIR)/$(PLUGIN_NAME) && npm run dev'
+
 test-node:
 	@echo "[node] Running tests"
-	@$(DOCKER_COMPOSE) exec -u$(NODE_CONTAINER_USER) $(NODE_CONTAINER_NAME) sh -c 'cd $(NODE_CONTAINER_WORKSPACE_DIR)/build/front && npm run test'
+	@$(DOCKER_COMPOSE) exec -u$(NODE_CONTAINER_USER) $(NODE_CONTAINER_NAME) sh -c 'cd $(NODE_CONTAINER_WORKSPACE_DIR)/$(PLUGIN_NAME) && npm run test'
 
 test-wordpress:
 	@echo "[wordpress] Updating git repository"
@@ -256,7 +267,7 @@ test-wordpress:
 ifeq ($(GITHUB_ACTIONS),true)
 	@$(DOCKER_COMPOSE) exec -u$(WORDPRESS_CONTAINER_USER) $(WORDPRESS_CONTAINER_NAME) sh -c 'cd $${WORDPRESS_BASE_DIR:-/bitnami/wordpress}/wp-content/plugins/$(PLUGIN_NAME) && ./vendor/bin/grumphp run --no-interaction'
 else
-	@$(DOCKER_COMPOSE) exec -u$(WORDPRESS_CONTAINER_USER) $(WORDPRESS_CONTAINER_NAME) sh -c 'cd $${WORDPRESS_BASE_DIR:-/bitnami/wordpress}/wp-content/plugins/$(PLUGIN_NAME) && ./vendor/bin/grumphp run'
+	@$(DOCKER_COMPOSE) exec -u$(WORDPRESS_CONTAINER_USER) $(WORDPRESS_CONTAINER_NAME) sh -c 'cd $${WORDPRESS_BASE_DIR:-/bitnami/wordpress}/wp-content/plugins/$(PLUGIN_NAME) && php -d max_execution_time=0 -d memory_limit=-1 -f ./vendor/bin/grumphp -- run'
 endif
 
 deploy-zip:
@@ -332,6 +343,7 @@ help:
 	@echo "Makefile targets:"
 	@echo "  all               - Start environment"
 	@echo "  install           - Start environment and install dependencies"
+	@echo "  dev               - Start development server with HMR"
 	@echo "  test              - Run tests"
 	@echo "  deploy            - Start environment, install dependencies and deploy to $(MODE)"
 	@echo "  down              - Stop environment"

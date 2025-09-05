@@ -577,10 +577,16 @@ class Field extends \acf_field
     {
         global $post;
 
-        $version = $this->env['version'];
-        $url = trailingslashit($this->env['url']);
-        $path = trailingslashit($this->env['path']);
-        $cache_busting = $this->env['cache_busting'];
+        Vite::init(
+            $this->env['path'],
+            $this->env['url'],
+            $this->env['version']
+        );
+
+        // Add Vite dev scripts for HMR in development
+        if ($this->env['debug']) {
+            Vite::devScripts();
+        }
 
         // https://wordpress.stackexchange.com/a/273996/99214
         // https://stackoverflow.com/a/59665364/3929620

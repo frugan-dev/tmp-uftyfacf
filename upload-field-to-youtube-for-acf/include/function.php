@@ -46,7 +46,7 @@ if (!function_exists('wpspaghetti_uftyfacf_init_container')) {
         $proxies_dir = $cache_dir.'/proxies';
 
         // Check if we should use ContainerBuilder (with cache)
-        $builder_cache = Environment::getBool('WPSPAGHETTI_UFTYFACF_BUILDER_CACHE', true);
+        $builder_cache = Environment::getBool('WPSPAGHETTI_UFTYFACF_BUILDER_CACHE_ENABLED', true);
 
         if ($builder_cache) {
             // Ensure cache directory exists

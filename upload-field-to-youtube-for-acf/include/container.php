@@ -44,8 +44,7 @@ return [
         'path' => WPSPAGHETTI_UFTYFACF_PATH,
         'debug' => Environment::getBool('WP_DEBUG', false),
         'locale' => get_locale(),
-        'server_upload' => Environment::getBool('WPSPAGHETTI_UFTYFACF_SERVER_UPLOAD', false),
-        'cache_busting' => Environment::getBool('WPSPAGHETTI_UFTYFACF_CACHE_BUSTING', false),
+        'server_upload' => Environment::getBool('WPSPAGHETTI_UFTYFACF_SERVER_UPLOAD_ENABLED', false),
         'cron_schedule' => Environment::get('WPSPAGHETTI_UFTYFACF_CRON_SCHEDULE', 'daily'),
         'recent_upload_time_window' => Environment::getInt('WPSPAGHETTI_UFTYFACF_RECENT_UPLOAD_TIME_WINDOW', 300), // 5 minutes
         'resumable_upload_max_chunks' => Environment::getInt('WPSPAGHETTI_UFTYFACF_RESUMABLE_UPLOAD_MAX_CHUNKS', 10000), // Increased limit for very large files
@@ -54,6 +53,7 @@ return [
         'video_id_retrieval_initial_sleep' => Environment::getInt('WPSPAGHETTI_UFTYFACF_VIDEO_ID_RETRIEVAL_INITIAL_SLEEP', 2), // Initial sleep before first attempt in seconds
         'log_retention_days' => Environment::getInt('WPSPAGHETTI_UFTYFACF_LOG_RETENTION_DAYS', 30), // Days to keep log files
         'disable_logging' => Environment::getBool('WPSPAGHETTI_UFTYFACF_DISABLE_LOGGING', false),
+        'cache_busting' => Environment::getBool('VITE_CACHE_BUSTING_ENABLED', Environment::getBool('CACHE_BUSTING_ENABLED', false)),
     ])),
 
     'allowed_video_mime_types' => \DI\factory(static fn (ContainerInterface $container) => apply_filters($container->get('plugin_prefix').'_allowed_video_mime_types', [

@@ -23,15 +23,36 @@
     "postbuild:prod": "npm run clean:sourcemaps",
     "debug": "DEBUG=vite:* npm run dev",
     "debug:config": "vite --debug config",
-    "debug:info": "node -e \"console.log(JSON.stringify(process.env, null, 2))\" | grep VITE"
+    "debug:info": "node -e \"console.log(JSON.stringify(process.env, null, 2))\" | grep VITE",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "devDependencies": {
+    "@types/jquery": "^3.5.33",
     "glob": "^11.0.3",
-    "javascript-obfuscator": "^4.1.0",
-    "nodemon": "^3.1.10",
+    "jest": "^30.1.3",
+    "jest-environment-jsdom": "^30.1.2",
     "sass": "^1.69.0",
     "vite": "^7.0.6",
     "vite-bundle-analyzer": "^1.1.0"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "testMatch": [
+      "<rootDir>/__tests__/**/*.test.js",
+      "<rootDir>/__tests__/**/*.spec.js"
+    ],
+    "collectCoverageFrom": [
+      "resources/js/**/*.js",
+      "!resources/js/**/*.test.js",
+      "!resources/js/**/*.spec.js"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/__tests__/setup.js"
+    ],
+    "clearMocks": true,
+    "restoreMocks": true
   },
   "engines": {
     "node": ">=18.0.0",

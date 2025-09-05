@@ -13,7 +13,8 @@ grumphp:
         # File size check - prevent overly large files
         file_size:
             ignore_patterns:
-                - 'vendor/*'
+                - 'node_modules'
+                - 'vendor'
                 - '*.lock'
 
         # Git commit message validation
@@ -79,4 +80,4 @@ grumphp:
 
         # YAML validation
         yamllint:
-            ignore_patterns: ['vendor']
+            ignore_patterns: ['node_modules', 'vendor']
