@@ -69,6 +69,7 @@ WPSPAGHETTI_UFTYFACF_GOOGLE_OAUTH_CLIENT_ID ?=
 WPSPAGHETTI_UFTYFACF_GOOGLE_OAUTH_CLIENT_SECRET ?=
 WPSPAGHETTI_UFTYFACF_SERVER_UPLOAD_ENABLED ?= false
 
+VITE_HMR_CLIENT_PORT ?= 1337
 VITE_CACHE_BUSTING_ENABLED ?= false
 
 MODE ?= develop
@@ -177,7 +178,11 @@ up:
 install-node: clean-node
 	@echo "[node] Installing dependencies ($(MODE))"
 	@$(DOCKER_COMPOSE) exec -u$(NODE_CONTAINER_USER) $(NODE_CONTAINER_NAME) sh -c 'cd $(NODE_CONTAINER_WORKSPACE_DIR)/$(PLUGIN_NAME) && npm install'
+ifeq ($(MODE),production)
+	@$(DOCKER_COMPOSE) exec -u$(NODE_CONTAINER_USER) $(NODE_CONTAINER_NAME) sh -c 'cd $(NODE_CONTAINER_WORKSPACE_DIR)/$(PLUGIN_NAME) && npm run build:prod'
+else
 	@$(DOCKER_COMPOSE) exec -u$(NODE_CONTAINER_USER) $(NODE_CONTAINER_NAME) sh -c 'cd $(NODE_CONTAINER_WORKSPACE_DIR)/$(PLUGIN_NAME) && npm run build'
+endif
 
 install-wordpress: clean-wordpress
 ifneq ($(GITHUB_TOKEN),)
@@ -206,6 +211,7 @@ endif
 	@$(DOCKER_COMPOSE) exec -u$(WORDPRESS_CONTAINER_USER) $(WORDPRESS_CONTAINER_NAME) sh -c "sed -i '/define('\''WPSPAGHETTI_UFTYFACF_GOOGLE_OAUTH_CLIENT_ID'\'',/d' $${WORDPRESS_BASE_DIR:-/bitnami/wordpress}/wp-config.php && sed -i '1a define('\''WPSPAGHETTI_UFTYFACF_GOOGLE_OAUTH_CLIENT_ID'\'', '\''${WPSPAGHETTI_UFTYFACF_GOOGLE_OAUTH_CLIENT_ID}'\'');' $${WORDPRESS_BASE_DIR:-/bitnami/wordpress}/wp-config.php"
 	@$(DOCKER_COMPOSE) exec -u$(WORDPRESS_CONTAINER_USER) $(WORDPRESS_CONTAINER_NAME) sh -c "sed -i '/define('\''WPSPAGHETTI_UFTYFACF_GOOGLE_OAUTH_CLIENT_SECRET'\'',/d' $${WORDPRESS_BASE_DIR:-/bitnami/wordpress}/wp-config.php && sed -i '2a define('\''WPSPAGHETTI_UFTYFACF_GOOGLE_OAUTH_CLIENT_SECRET'\'', '\''${WPSPAGHETTI_UFTYFACF_GOOGLE_OAUTH_CLIENT_SECRET}'\'');' $${WORDPRESS_BASE_DIR:-/bitnami/wordpress}/wp-config.php"
 	@$(DOCKER_COMPOSE) exec -u$(WORDPRESS_CONTAINER_USER) $(WORDPRESS_CONTAINER_NAME) sh -c "sed -i '/define('\''WPSPAGHETTI_UFTYFACF_SERVER_UPLOAD_ENABLED'\'',/d' $${WORDPRESS_BASE_DIR:-/bitnami/wordpress}/wp-config.php && sed -i '3a define('\''WPSPAGHETTI_UFTYFACF_SERVER_UPLOAD_ENABLED'\'', ${WPSPAGHETTI_UFTYFACF_SERVER_UPLOAD_ENABLED});' $${WORDPRESS_BASE_DIR:-/bitnami/wordpress}/wp-config.php"
+	@$(DOCKER_COMPOSE) exec -u$(WORDPRESS_CONTAINER_USER) $(WORDPRESS_CONTAINER_NAME) sh -c "sed -i '/define('\''VITE_HMR_CLIENT_PORT'\'',/d' $${WORDPRESS_BASE_DIR:-/bitnami/wordpress}/wp-config.php && sed -i '3a define('\''VITE_HMR_CLIENT_PORT'\'', ${VITE_HMR_CLIENT_PORT});' $${WORDPRESS_BASE_DIR:-/bitnami/wordpress}/wp-config.php"
 	@$(DOCKER_COMPOSE) exec -u$(WORDPRESS_CONTAINER_USER) $(WORDPRESS_CONTAINER_NAME) sh -c "sed -i '/define('\''VITE_CACHE_BUSTING_ENABLED'\'',/d' $${WORDPRESS_BASE_DIR:-/bitnami/wordpress}/wp-config.php && sed -i '3a define('\''VITE_CACHE_BUSTING_ENABLED'\'', ${VITE_CACHE_BUSTING_ENABLED});' $${WORDPRESS_BASE_DIR:-/bitnami/wordpress}/wp-config.php"
 	
 	@echo "[wordpress] Installing dependencies ($(MODE))"

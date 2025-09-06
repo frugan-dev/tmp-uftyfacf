@@ -62,7 +62,7 @@ services:
     container_name: node
     image: docker.io/frugan/bitnamilegacy-node:${NODE_TAG:-latest}
     ports:
-      - ${NODE_PORT:-3000}:3000
+      - ${NODE_PORT:-1337}:3000
     volumes:
       - ${PWD}:/app
     #https://dev.to/igmrrf/docker-react-exited-with-code-0-398n
